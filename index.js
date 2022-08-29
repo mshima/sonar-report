@@ -260,14 +260,14 @@ const generateReport = async options => {
 
   if (data.sinceLeakPeriod) {
     const response = await got(
-      `${sonarBaseURL}/api/settings/values?component=${sonarComponent}&keys=sonar.leak.period`,
+      `${sonarBaseURL}/api/components/show?component=${sonarComponent}`,
       {
         agent,
         headers,
       }
     );
     const json = JSON.parse(response.body);
-    data.previousPeriod = json.settings.length > 0 ? json.settings[0].value : '';
+    data.previousPeriod = json.component && json.component.leakPeriodDate || '';
   }
 
   if (options.qualityGateStatus) {
